@@ -32,6 +32,7 @@ def showStructure(s):
                 print("\t| ",end ="")
         print("\t|")
     print("\t|"+"-"*(c-1)+"|")
+    print()
 
 
 numeros = []
@@ -55,5 +56,6 @@ for iteracion in range(tam):
     for numero in numeros:
         pos = getSubNumber(numero,iteracion)
         estructura[pos].append(numero)
+    print ("\t Iteración: ",iteracion)
     showStructure (estructura)
     print()
