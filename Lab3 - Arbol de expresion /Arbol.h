@@ -24,7 +24,7 @@ private:
 public:
     Arbol(string exp);
     Arbol(list<string>);
-    void showList();
+    void showStack();
     void showR(Nodo*, int);
     ~Arbol();
 };
@@ -34,8 +34,8 @@ Arbol::Arbol(string exp)
 
 }
 
-void Arbol::showList(){
-    cout<<"List: | ";
+void Arbol::showStack(){
+    cout<<"Stack: | ";
     for(auto& i: this->pila){
         i->getRawValue();
         cout<<" | ";
@@ -67,7 +67,7 @@ Arbol::Arbol(list<string> post){
             post.pop_front();
         }
 
-    this->showList();
+    this->showStack();
         
     }
 
@@ -75,11 +75,22 @@ Arbol::Arbol(list<string> post){
     cout<<"Arbol"<<endl;
     this->showR(pila.front(),0);
 
+    if (pila.size()==1){
+        this->root=pila.front();
+        this->pila.clear();
+    }
+    else{
+        cout<<"There's some error."<<endl;
+        cout<<"Arbol"<<endl;
+        this->showR(pila.front(),0);
+        this->pila.clear();
+    }
+    
 }
 
 void Arbol::showR(Nodo* r, int i){
     if(!r) return;
-    i += 4;
+    i += 3;
     this->showR(r->der,i);
     for(int j = 0; j < i; j++)
         cout<<" ";
