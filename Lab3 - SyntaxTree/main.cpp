@@ -1,13 +1,16 @@
 #include <iostream>
 using namespace std;
 #include "Arbol.h"
+
+
 int main(int argc, char const *argv[])
 {
-    list<string> post = {"1","2","+","3","4","5","+","*","*"};
+    list<string> post = {"12","25","+","31","40","55","+","*","*"};
+
 
     Arbol c(post);
-//    c.show();
-
     cout<<c.getDot()<<endl;
+
+
     return 0;
 }

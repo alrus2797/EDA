@@ -22,7 +22,6 @@ private:
     Nodo* root;
     list<Nodo*> pila;
 public:
-    Arbol(string exp);
     Arbol(list<string>);
     void showStack();
     void showR(Nodo*, int);
@@ -33,19 +32,6 @@ public:
     ~Arbol();
 };
 
-Arbol::Arbol(string exp)
-{
-
-}
-
-void Arbol::showStack(){
-    cout<<"Stack: | ";
-    for(auto& i: this->pila){
-        i->getRawValue();
-        cout<<" | ";
-    }
-    cout<<endl;
-}
 
 Arbol::Arbol(list<string> post){
     int v;
@@ -75,10 +61,17 @@ Arbol::Arbol(list<string> post){
     else{
         cout<<"There's some error."<<endl;
         cout<<"Arbol"<<endl;
-        this->showR(pila.front(),0);
-        this->pila.clear();
     }
-    
+    cout<<endl;
+}
+
+void Arbol::showStack(){
+    cout<<"Stack: | ";
+    for(auto& i: this->pila){
+        i->getRawValue();
+        cout<<" | ";
+    }
+    cout<<endl;
 }
 
 void Arbol::showR(Nodo* r, int i){
@@ -100,8 +93,8 @@ void Arbol::show(){
 void Arbol::generateDot(string& res, Nodo* t){
     if (!t) return;
 
-    if (t->izq) res = res +  to_string(t->id) + " -> " + to_string(t->izq->id) + "; \n";
-    if (t->der) res = res +  to_string(t->id) + " -> " + to_string(t->der->id) + "; \n";
+    if (t->izq) res = res +  t->id + " -> " + t->izq->id + "; \n";
+    if (t->der) res = res +  t->id + " -> " + t->der->id + "; \n";
     generateDot(res,  t->izq);
     generateDot(res,  t->der);   
 }
@@ -109,7 +102,7 @@ void Arbol::generateDot(string& res, Nodo* t){
 void Arbol::setIDs(Nodo* t, int& i,string& res){
     if (!t) return;
     t->id = i;
-    res = res + to_string(i) + " [ label = \"" + t->getStrValue() + "\" ]; \n";
+    res = res + i + " [ label = \"" + t->getStrValue() + "\" ]; \n";
     i = i + 1;
     setIDs(t->izq,i, res);
     setIDs(t->der,i, res);
@@ -121,6 +114,8 @@ string Arbol::getDot(){
     int i = 0;
     this->setIDs(this->root, i, res);
     this->generateDot(res, this->root);
+
+    res = res + "Resultado -> " + this->root->getValue() + "; \n";
     res = res + "}";
     return res;
 }

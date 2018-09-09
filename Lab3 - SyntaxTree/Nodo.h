@@ -4,6 +4,10 @@
 #include <iostream>
 using namespace std;
 
+// Append int to string
+string operator+(const string& a, const int& b) { //outside the class
+    return a + to_string(b);
+}
 
 class Nodo
 {
