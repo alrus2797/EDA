@@ -12,6 +12,7 @@ public:
     sNodo(string value);
     int getValue() override;
     void getRawValue() override;
+    string getStrValue() override;
     ~sNodo();
 friend class Arbol;
 };
@@ -36,6 +37,10 @@ int sNodo::getValue(){
 
 void sNodo::getRawValue(){
     cout<<this->value;
+}
+
+string sNodo::getStrValue(){
+    return this->value;
 }
 
 sNodo::~sNodo()

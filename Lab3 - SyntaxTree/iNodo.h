@@ -12,6 +12,7 @@ public:
     iNodo(int value);
     int getValue() override;
     void getRawValue() override;
+    string getStrValue() override;
     ~iNodo();
 
 friend class Arbol;
@@ -29,6 +30,10 @@ int iNodo::getValue(){
 
 void iNodo::getRawValue(){
     cout<<this->value;
+}
+
+string iNodo::getStrValue(){
+    return to_string(this->value);
 }
 
 iNodo::~iNodo()

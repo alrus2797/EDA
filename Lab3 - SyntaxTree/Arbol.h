@@ -26,6 +26,10 @@ public:
     Arbol(list<string>);
     void showStack();
     void showR(Nodo*, int);
+    void show();
+    void generateDot(string&, Nodo*);
+    void setIDs(Nodo* t, int&, string&);
+    string getDot();
     ~Arbol();
 };
 
@@ -44,12 +48,8 @@ void Arbol::showStack(){
 }
 
 Arbol::Arbol(list<string> post){
-    cout<<"-------------------"<<endl;
     int v;
     string vs;
-
-    cout<<"Expresion: ";
-    showLista(post);
     while (!post.empty()){
         if(isdigit(post.front()[0])){
             v = stoi(post.front());
@@ -66,14 +66,7 @@ Arbol::Arbol(list<string> post){
             pila.push_back(nuevo);
             post.pop_front();
         }
-
-    this->showStack();
-        
     }
-
-    cout<<"Resultado: "<<pila.front()->getValue()<<endl;
-    cout<<"Arbol"<<endl;
-    this->showR(pila.front(),0);
 
     if (pila.size()==1){
         this->root=pila.front();
@@ -97,6 +90,39 @@ void Arbol::showR(Nodo* r, int i){
     r->getRawValue();
     cout<<endl;
     this->showR(r->izq,i);
+}
+
+void Arbol::show(){
+    this->showR(this->root,0);
+}
+
+
+void Arbol::generateDot(string& res, Nodo* t){
+    if (!t) return;
+
+    if (t->izq) res = res +  to_string(t->id) + " -> " + to_string(t->izq->id) + "; \n";
+    if (t->der) res = res +  to_string(t->id) + " -> " + to_string(t->der->id) + "; \n";
+    generateDot(res,  t->izq);
+    generateDot(res,  t->der);   
+}
+
+void Arbol::setIDs(Nodo* t, int& i,string& res){
+    if (!t) return;
+    t->id = i;
+    res = res + to_string(i) + " [ label = \"" + t->getStrValue() + "\" ]; \n";
+    i = i + 1;
+    setIDs(t->izq,i, res);
+    setIDs(t->der,i, res);
+}
+
+string Arbol::getDot(){
+
+    string res = "digraph G {\n";
+    int i = 0;
+    this->setIDs(this->root, i, res);
+    this->generateDot(res, this->root);
+    res = res + "}";
+    return res;
 }
 
 
