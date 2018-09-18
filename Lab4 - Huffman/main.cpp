@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include <map>
+
+#include "Huffman.h"
 
 using namespace std;
 
@@ -23,14 +24,19 @@ int main(){
         if (frecuencias.find(frase[i]) != frecuencias.end()){
             frecuencias[frase[i]]++;
         }
+        
+
         else{
             frecuencias[frase[i]]=1;
         }
         i++;
     }
 
-    for (auto i : frecuencias){
-        cout<< i.first << "->" <<i.second <<endl;
-    }
+    // for (auto i : frecuencias){
+    //     cout<< i.first << "->" <<i.second <<endl;
+    // }
 
+    Huffman a(frecuencias);
+    cout<<a.getDot()<<endl;
+    
 }
