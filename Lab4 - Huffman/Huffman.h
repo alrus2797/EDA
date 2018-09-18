@@ -26,20 +26,20 @@ class Huffman{
         map<char,int> frecuencies;
         hNodo* root;
     public:
+        map<char,string> keys;
         Huffman(map<char,int> frecuencies){
-            list<hNodo*> stack;
-
+            list<hNodo*> stack,hojas;
+            
             for (auto i : frecuencies){
                 stack.push_back( new hNodo(i.first, i.second) );
             }
-            imp(stack, "stack");
 
-            //cout<<"comp: "<< comparePNodos(stack[0],stack[1])<<endl;
+            hojas = stack;
+
             hNodo* h1;
             hNodo* h2;
             hNodo* p;
             while (stack.size() > 1){
-                //sort(stack.begin(), stack.end(),comparePNodos);
                 stack.sort(comparePNodos);
                 h1 = stack.front();
                 stack.pop_front();
@@ -47,10 +47,29 @@ class Huffman{
                 stack.pop_front();
 
                 p = *h1 + *h2;
+                h1->padre = p;
+                h2->padre = p;
                 stack.push_front(p);
             }
             this->root = *(stack.begin());
-            //showR(this->root,0);
+
+            hNodo* temp;
+            string codigo;
+            for (auto& i : hojas){
+                temp = i;
+                codigo = "";
+                //cout<<"DEBUG: "<<temp->padre<<endl;
+                while (temp != this->root){
+                    if (temp->padre->izq == temp) codigo = codigo + "0";
+                    if (temp->padre->der == temp) codigo = codigo + "1";
+                    temp = temp->padre;
+                }
+                reverse(codigo.begin(),codigo.end());
+                i->camino = codigo;
+            }
+
+            for (auto i: hojas) this->keys[i->letra] = i ->camino;
+
         }
 
         void showR(hNodo* r, int i){
@@ -92,9 +111,31 @@ class Huffman{
             return res;
         }
 
+        string encriptar (string texto){
+            string res = "";
+            int i = 0;
+            while (texto[i] != '\0'){
+                res =  res + this->keys[texto[i]];
+                i++;
+            }
+            return res;
+        }
 
-
-        
+        string desencriptar (string texto){
+            string res = "";
+            int i = 0;
+            hNodo* temp;
+            while (texto[i] != '\0'){
+                temp =  this->root;
+                while (!temp->hoja){
+                    if (texto[i] == '0') temp = temp->izq;
+                    if (texto[i] == '1') temp = temp->der;
+                    i++;
+                }
+                if (temp) res = res + string(&temp->letra);
+            }
+            return res;
+        }
         
 };
 

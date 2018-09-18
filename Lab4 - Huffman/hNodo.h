@@ -12,56 +12,45 @@ string operator+(const string& a, const int& b) { //outside the class
 string operator+(const string& a, const char& b) { //outside the class
     return a + to_string(b);
 }
+
 class hNodo
 {
-private:
-    char letra;
-    int frecuencia;
-    hNodo* izq;
-    hNodo* der;
-    hNodo* padre;
-    bool hoja;
+    private:
+        char letra;
+        int frecuencia;
+        hNodo* izq;
+        hNodo* der;
+        hNodo* padre;
+        bool hoja;
 
-    int id;
+        string camino;
 
-public:
-    hNodo(char letra, int frecuencia);
-    hNodo(int frecuencia);
-    string getStrValue();
-    ~hNodo();
+        int id;
 
-// std::ostream& operator<< (std::ostream& stream){
-//     cout<<" ("<<this->letra<<", "<<this->frecuencia<<") ";
-//     return stream;
-// }
+    public:
+        hNodo(char letra, int frecuencia);
+        hNodo(int frecuencia);
+        string getStrValue();
+        ~hNodo();
 
-bool operator < (const hNodo& a){
-    //cout<<this->frecuencia<<" < "<<a.frecuencia<<endl; 
-    if (this->frecuencia < a.frecuencia) return true;
-    return false;
-}
+    bool operator < (const hNodo& a){
+        if (this->frecuencia < a.frecuencia) return true;
+        return false;
+    }
 
-// bool operator > (const hNodo& a){
-//     cout<<this->frecuencia<<" < "<<a.frecuencia<<endl; 
-//     if (this->frecuencia > a.frecuencia) return true;
-//     return false;
-// }
+    friend ostream& operator<< (ostream& os, const hNodo& obj);
+    friend bool operator> (const hNodo& a,  const hNodo& b);
+    friend hNodo* operator + ( hNodo&,  hNodo&);
 
-
-friend ostream& operator<< (ostream& os, const hNodo& obj);
-friend bool operator> (const hNodo& a,  const hNodo& b);
-friend hNodo* operator + ( hNodo&,  hNodo&);
-
-friend class Huffman;
-
+    friend class Huffman;
 };
 
 bool operator> (const hNodo& a,  const hNodo& b){
-    //cout<< a.frecuencia << " > " << b.frecuencia <<endl;
     return a.frecuencia > b.frecuencia;
 }
 
 
+//Constructor para nodos
 hNodo::hNodo(char letra, int frecuencia)
 {
     this->letra = letra;
@@ -72,6 +61,8 @@ hNodo::hNodo(char letra, int frecuencia)
     this->hoja = true;
 }
 
+
+//Constructor para nodos padre
 hNodo::hNodo( int frecuencia)
 {
     this->frecuencia = frecuencia;
@@ -90,8 +81,6 @@ hNodo* operator + (hNodo& a, hNodo& b){
     hNodo* nuevo = new hNodo(a.frecuencia+b.frecuencia);
     nuevo->izq = &a;
     nuevo->der = &b;
-    a.padre = nuevo;
-    b.padre = nuevo;
     return nuevo;
 }
 
@@ -105,6 +94,7 @@ string hNodo::getStrValue(){
     string res ="";
     if (this->hoja) res = res +" ('"+this->letra+"', "+this->frecuencia+") ";
     else res = res +" ("+this->frecuencia+") ";
+    res = res + "\n" + this->camino;
     return res;
 }
 

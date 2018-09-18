@@ -17,26 +17,20 @@ int main(){
         frase = frase + line;
     }
     int i = 0;
-    cout<< frase <<endl;
-
     while(frase[i] != '\0'){
-
         if (frecuencias.find(frase[i]) != frecuencias.end()){
             frecuencias[frase[i]]++;
         }
-        
-
         else{
             frecuencias[frase[i]]=1;
         }
         i++;
     }
 
-    // for (auto i : frecuencias){
-    //     cout<< i.first << "->" <<i.second <<endl;
-    // }
-
     Huffman a(frecuencias);
+    cout<<"//"<<a.encriptar(frase)<<endl;
+    string enc ="10100111101101111100101100100011100011011001010101100101111110111001110101110001000110001001100001011111000110101001101000011111111001101110101001110";
+    cout<<"//"<<a.desencriptar(enc)<<endl;
     cout<<a.getDot()<<endl;
     
 }
