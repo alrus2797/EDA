@@ -7,6 +7,9 @@
 
 using namespace std;
 
+template <int N>
+class Hash;
+
 
 class hashNode
 {
@@ -25,8 +28,7 @@ public:
     bool operator == ( const int& h2){
         return this->key == h2;
     }
-
-    friend class Hash;
+    template <int N> friend class Hash;
 
     friend ostream& operator<< (ostream& os, hashNode h1){
         

@@ -1,7 +1,6 @@
 #include "Hash.h"
 #include <map>
-#include <cctype>
-#include <fstream>
+
 
 using namespace std;
 
@@ -16,7 +15,7 @@ int maino(){
     // auto it = find(l.begin(),l.end(),a);
     // cout<<*it<<endl;
 
-    Hash ha;
+    Hash<1500> ha;
     ha.put("palabra");
     ha.put("palabra");
     ha.put("palabrota");
@@ -27,37 +26,41 @@ int maino(){
 
 int main(int argc, char const *argv[])
 {
-    map<string,bool> dictionary;
-    Hash nHash;
-    string frase;
-    fstream file;
-    file.open("palabras/listado-general.txt");
-    string line;
+
+    Hash<1500> nHash;
+    nHash.fill("palabras/listado-general.txt");
     int i;
     string palabra;
-    unsigned char q = 'é';
-    int qw = q;
-    cout<<"asdsad"<<qw<<endl;
-    while (!file.eof()){
-        getline(file,line);
-        //cout<<line<<endl;
-        dictionary[line]=true;
-        //cout<<line<<endl;
-        nHash.put(line);
-    }
-    //nHash.show();
-    
     string query;
-    cout<<"Ingrese una palabra"<<endl;
+
+    cout<<"Ingrese una oración"<<endl;
     getline(cin,query);
     i=0;
-    cout<<"Palabra: "<<query<<endl;
-    if (nHash.get(query)){
-        cout<<"Esta bien escrita"<<endl;
+
+    vector<string> palabras;
+
+    string s = query;
+    string delimiter = " ";
+
+    size_t pos = 0;
+    while ((pos = s.find(delimiter)) != std::string::npos) {
+        palabra = s.substr(0, pos);
+        palabras.push_back(palabra);
+        s.erase(0, pos + delimiter.length());
     }
-    else{
-        cout<<"No esta bien escrita"<<endl;
+    palabras.push_back(s);
+    cout<<endl;
+
+    for(auto i:palabras){
+        if (nHash.get(i)){
+            cout<< i <<" esta bien escrita"<<endl;
+        }
+        else{
+            cout<<i<<" no esta bien escrita"<<endl;
+        }
+        
     }
+
     
     return 0;
 }
