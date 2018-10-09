@@ -15,18 +15,19 @@ class Arbol:
 		else: find(nodo.der,valor)
 
 	
-	def push(self,val):
+	def _push(self,val,nodo):
 		if not self.raiz: self.raiz = Nodo(val)
 		else:
-			self._push(val,self.raiz)
+			if val < nodo.valor:
+				if nodo.izq: self._push(val,nodo.izq)
+				else: nodo.izq = Nodo(val) 
+			else:
+				if nodo.der : self._push(val, nodo.der)
+				else: nodo.der = Nodo(val)
 
-	def _push(self,val, nodo):
-		if val < nodo.valor:
-			if nodo.izq: self._push(val,nodo.izq)
-			else: nodo.izq = Nodo(val) 
-		else:
-			if nodo.der : self._push(val, nodo.der)
-			else: nodo.der = Nodo(val)
+
+	def push(self,val):
+		self._push(val,self.raiz)
 
 	def showr(self,nodo, i):
 		if not nodo: return
@@ -48,13 +49,11 @@ class Arbol:
 				rStack.append(actual)
 				if actual.der : nStack.append(actual.der)
 				if actual.izq : nStack.append(actual.izq)
-
 			else:
 				print actual.valor,
-				try: print rStack.pop().valor,
-				except:
-					pass
-
+				if rStack != []:
+					print rStack.pop().valor,
+				
 	def ref(self,nodo):
 		if not nodo: return
 		temp = nodo.izq
@@ -62,13 +61,15 @@ class Arbol:
 		nodo.der = temp
 		self.ref(nodo.izq)
 		self.ref(nodo.der)
+
 arbol = Arbol()
 l = [11,6,8,19,4,17,43]
 for i in l:
 	arbol.push(i)
 
 arbol.show()
-print("---------")
-arbol.ref(arbol.raiz)
-arbol.show()
+arbol.inorden()
+# print("---------")
+# arbol.ref(arbol.raiz)
+# arbol.show()
 
