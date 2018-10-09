@@ -1,19 +1,24 @@
-
 class Nodo:
 	def __init__(self,valor):
 		self.valor = valor
 		self.izq = None
 		self.der = None
+	def tieneHijos(self):
+		if self.izq or self.der:
+			if self.izq and self.der: return 2
+			if self.izq : return 0
+			if self.der : return 1
+		else :  return -1
 
 class Arbol:
 	def __init__(self):
 		self.raiz = None
+
 	def find(self, nodo,valor):		
 		if not nodo: return 
 		if nodo.valor == valor: return nodo
 		if valor < nodo.valor: find(nodo.izq,valor)
 		else: find(nodo.der,valor)
-
 	
 	def _push(self,val,nodo):
 		if not self.raiz: self.raiz = Nodo(val)
@@ -53,7 +58,23 @@ class Arbol:
 				print actual.valor,
 				if rStack != []:
 					print rStack.pop().valor,
+
+	#Sin usar pilas				
+	def preorden(self):
+		actual = self.raiz
+		temp = actual
+		preorden = [self.raiz.valor]
+		while actual:
+			hijos = actual.tieneHijos()
+			idx = preorden.index(actual.valor)
+			if actual.izq : preorden.insert(idx+1,actual.izq.valor)
+			if actual.der : preorden.insert(idx+2,actual.izq.valor)
+		
+			
 				
+				
+
+
 	def ref(self,nodo):
 		if not nodo: return
 		temp = nodo.izq
@@ -68,8 +89,7 @@ for i in l:
 	arbol.push(i)
 
 arbol.show()
-arbol.inorden()
-# print("---------")
-# arbol.ref(arbol.raiz)
-# arbol.show()
-
+#arbol.preorden()
+print("---------")
+arbol.ref(arbol.raiz)
+arbol.show()
